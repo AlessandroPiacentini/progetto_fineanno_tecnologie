@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="loginForm">
+        <label for="username">Nome utente</label>
+        <input type="text" name="username" id="username" required>
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" required>
+        <button type="submit">Accedi</button>
+    </form>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#loginForm').on('submit', function(e) {
+                e.preventDefault();
+                var username = $('#username').val();
+                var password = $('#password').val();
+                var param = {
+                    username: username,
+                    password: password
+                };
+                $.ajax({
+                    url: '/checklogin',
+                    type: 'POST',
+                    data: param,
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data);
+                        if (data === false) {
+                            alert('Accesso fallito');
+                        } else {
+                            window.location.href = '/'+data;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
