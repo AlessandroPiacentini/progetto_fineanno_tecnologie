@@ -8,15 +8,13 @@ class LoginController:
         pass
     
     def checklogin(self, data):
-        db=Database.getInstance()
+        db = Database.getInstance()
+        result = db.read_table('users', where=data)
         
-        result=db.read_table('users',where=data)
-        if len(result)==0:
-            return json.dump(False)
+        if len(result) == 0:
+            return json.dumps(False)
         else:
-            return json.dump("home")
-            
-        
+            return json.dumps("home")
         
 
 

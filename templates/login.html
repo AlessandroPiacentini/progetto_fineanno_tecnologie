@@ -29,7 +29,8 @@
                 $.ajax({
                     url: '/checklogin',
                     type: 'POST',
-                    data: param,
+                    data: JSON.stringify(param),
+                    contentType: 'application/json; charset=utf-8',
                     dataType: 'json',
                     success: function(data) {
                         console.log(data);

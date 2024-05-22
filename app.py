@@ -4,7 +4,6 @@ import hashlib
 import json
 from login_controller import LoginController
 
-
 app = Flask(__name__)
 
 @app.route("/")
@@ -15,41 +14,24 @@ def hello_world():
 def login():
     return render_template("login.html")
 
-
-
 @app.route('/checklogin', methods=['POST'])
 def checklogin():
-    lg=LoginController()
-    
     data = request.get_json()  
     
-    print(data)
-    
-    data['password']=converti_in_md5(data['password'])
+    data['password'] = converti_in_md5(data['password'])
     
     
-    db=Database.getInstance()
-        
-    result=db.read_table('users',where=data)
-    if len(result)==0:
-        return json.dump(False)
-    else:
-        return json.dump("home")
-            
-        
-    
-    # response=lg.checklogin(data)
-    # print(response)
-    # return response
+    lg=LoginController()
+    result=lg.checklogin(data)
+    return result
     
     
     
-    
-def converti_in_md5(stringa):
-        m = hashlib.md5()
-        m.update(stringa.encode('utf-8'))
-        return m.hexdigest()
 
+def converti_in_md5(stringa):
+    m = hashlib.md5()
+    m.update(stringa.encode('utf-8'))
+    return m.hexdigest()
 
 if __name__ == '__main__':  
     app.run()
