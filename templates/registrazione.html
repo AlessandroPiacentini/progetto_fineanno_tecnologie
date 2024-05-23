@@ -6,31 +6,35 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Login</h2>
-    <form id="loginForm">
+    <h2>Registrati</h2>
+    <form id="registrazioneform">
         <label for="username">Nome utente</label>
         <input type="text" name="username" id="username" required>
         <label for="password">Password</label>
         <input type="password" name="password" id="password" required>
-        <button type="submit">Accedi</button>
-    </form><br>
-
-    <a href="/registrazione">registrazione</a>
-    
+        <label for="conf_pasw">conf_pasw</label>
+        <input type="password" name="conf_pasw" id="conf_pasw" required>
+        <button type="submit">Registrati</button>
+    </form>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#loginForm').on('submit', function(e) {
+            $('#registrazioneform').on('submit', function(e) {
                 e.preventDefault();
                 var username = $('#username').val();
                 var password = $('#password').val();
+                var conf_pasw = $('#conf_pasw').val();
+                if (password !== conf_pasw) {
+                    alert('Le password non corrispondono');
+                    return;
+                }
                 var param = {
                     username: username,
                     password: password
                 };
                 $.ajax({
-                    url: '/checklogin',
+                    url: '/checkregistrazione',
                     type: 'POST',
                     data: JSON.stringify(param),
                     contentType: 'application/json; charset=utf-8',

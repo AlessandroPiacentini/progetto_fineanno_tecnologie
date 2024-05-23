@@ -14,6 +14,11 @@ def hello_world():
 def login():
     return render_template("login.html")
 
+
+@app.route("/registrazione")
+def registrazione():
+    return render_template("registrazione.html")
+
 @app.route('/checklogin', methods=['POST'])
 def checklogin():
     data = request.get_json()  
@@ -24,6 +29,19 @@ def checklogin():
     lg=LoginController()
     result=lg.checklogin(data)
     return result
+    
+    
+@app.route('/checkregistrazione', methods=['POST'])
+def checkregistrazione():
+    data = request.get_json()  
+    
+    data['password'] = converti_in_md5(data['password'])
+    
+    
+    lg=LoginController()
+    result=lg.checkregistrazione(data)
+    return result
+    
     
     
     
