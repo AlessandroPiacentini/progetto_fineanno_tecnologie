@@ -1,12 +1,10 @@
-from flask import Flask, render_template
+from flask import flask, request, make_response, render_template
 
-app = Flask(__name__)
-
-
-
-
-@app.route("/login")
-def login():
-    return render_template("login.html")
-
-
+class Page_controller:
+    app = None
+    def __call__(self, app):
+        self.app = app
+    
+    @self.app.route("/login")
+    def login(self):
+        return render_template("login.html")
