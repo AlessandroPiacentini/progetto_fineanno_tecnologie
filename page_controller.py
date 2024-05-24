@@ -20,6 +20,18 @@ class PageController:
                 return render_template("home.html")
             else:
                 return render_template("login.html")
+        @self.app.route("/spese")
+        def spese():
+            if 'id' in session and session['id'] is not None:
+                return render_template("spese.html")
+            else:
+                return render_template("login.html")
+        @self.app.route("/addSpesa")
+        def addSpesa():
+            if 'id' in session and session['id'] is not None:
+                return render_template("add_spese.html")
+            else:
+                return render_template("login.html")
 
         @self.app.route("/registrazione")
         def registrazione():

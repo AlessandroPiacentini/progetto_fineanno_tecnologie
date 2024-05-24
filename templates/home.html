@@ -3,13 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Benvenuto</title>
+    <!-- Aggiungi il link al foglio di stile di Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Benvenuto</h1><br>
-    <a href="/logout">logout</a>
+    <div class="container">
+        <h1 class="mt-5">Benvenuto</h1>
+        <div class="mt-3">
+            <a href="/spese" class="btn btn-primary mr-2">Visualizza le tue ultime spese</a>
+            <a href="/addSpesa" class="btn btn-success">Aggiungi una spesa</a>
+        </div>
+        <div class="mt-3">
+            <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+    </div>
 
+    <!-- Aggiungi lo script di jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+    <!-- Aggiungi lo script di Bootstrap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

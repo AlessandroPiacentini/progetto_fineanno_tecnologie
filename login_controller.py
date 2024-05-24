@@ -1,5 +1,5 @@
 import hashlib
-from flask import Flask, request, jsonify, session
+from flask import Flask, redirect, request, jsonify, session
 from DataBase_controller import Database
 
 class LoginController:
@@ -25,7 +25,7 @@ class LoginController:
         @self.app.route('/logout')
         def logout():
             session.pop('id', None)
-            return jsonify("login")
+            return redirect('/login')
     
     def check_login(self, data):
         result = self.db.read_table('users', where=data)
