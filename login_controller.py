@@ -1,9 +1,9 @@
 import hashlib
-import json
-from flask import make_response, Flask, request, jsonify
+from flask import Flask, request, jsonify, session
 from DataBase_controller import Database
 
 class LoginController:
+    db = None
     def __init__(self, app):
         self.db = Database.getInstance()  # Initialize the database instance
         self.app = app
@@ -21,19 +21,25 @@ class LoginController:
             data = request.get_json()
             data['password'] = self.converti_in_md5(data['password'])
             return self.check_registrazione(data)
+        
+        @self.app.route('/logout')
+        def logout():
+            session.pop('id', None)
+            return jsonify("login")
     
     def check_login(self, data):
         result = self.db.read_table('users', where=data)
         if len(result) == 0:
             return jsonify(False)
         else:
+            session['id'] = result[0][0]
             return jsonify("home")
         
     def check_registrazione(self, data):
         result = self.db.read_table('users', where=data)
         if len(result) == 0:
             self.db.insert('users', data)
-            return jsonify("home")
+            return jsonify("login")
         else:
             return jsonify(False)
         

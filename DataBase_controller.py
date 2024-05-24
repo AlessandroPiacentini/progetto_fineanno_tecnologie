@@ -1,4 +1,4 @@
-import sqlite3
+import mysql.connector
 
 class Database:
     _instance = None
@@ -7,8 +7,13 @@ class Database:
     def __init__(self):
         if not Database._instance:
             Database._instance = self
-            self._dbname = "gestione_spese.db"
-            self._conn = sqlite3.connect(self._dbname)
+            self._dbname = "gestione_spese"
+            self._conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="",
+                database=self._dbname
+            )
         else:
             raise Exception("Non puoi creare un'altra istanza di questa classe.")
 
@@ -22,13 +27,13 @@ class Database:
         sql = f"UPDATE {table} SET "
         params = []
         for field, value in fields.items():
-            sql += f"{field} = ?, "
+            sql += f"{field} = %s, "
             params.append(value)
         sql = sql.rstrip(', ')
         if where is not None:
             sql += " WHERE "
             for field, value in where.items():
-                sql += f"{field} = ? AND "
+                sql += f"{field} = %s AND "
                 params.append(value)
             sql = sql.rstrip(" AND ")
         cur = self._conn.cursor()
@@ -43,26 +48,26 @@ class Database:
 
     def read_table(self, table, where=None):
         sql = f"SELECT * FROM {table}"
+        params = None
         if where is not None:
             sql += " WHERE "
             params = []
             for field, value in where.items():
-                sql += f"{field} = ? AND "
+                sql += f"{field} = %s AND "
                 params.append(value)
             sql = sql.rstrip(" AND ")
-            cur = self._conn.cursor()
+        cur = self._conn.cursor()
+        if params is not None:
             cur.execute(sql, params)
-            return cur.fetchall()
         else:
-            cur = self._conn.cursor()
             cur.execute(sql)
-            return cur.fetchall()
+        return cur.fetchall()
 
     def delete(self, table, where):
         sql = f"DELETE FROM {table} WHERE "
         params = []
         for field, value in where.items():
-            sql += f"{field} = ? AND "
+            sql += f"{field} = %s AND "
             params.append(value)
         sql = sql.rstrip(" AND ")
         cur = self._conn.cursor()
@@ -75,7 +80,7 @@ class Database:
         params = []
         for field, value in data.items():
             sql += f"{field}, "
-            values += "?, "
+            values += "%s, "
             params.append(value)
         sql = sql.rstrip(', ') + ")"
         values = values.rstrip(', ') + ")"

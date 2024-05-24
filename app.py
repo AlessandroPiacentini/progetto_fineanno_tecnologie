@@ -6,6 +6,7 @@ from login_controller import LoginController
 from page_controller import PageController
 
 app = Flask(__name__)
+app.secret_key = 'gestione_spese_tecnologie'
 
 lg = LoginController(app) 
 pc = PageController(app)

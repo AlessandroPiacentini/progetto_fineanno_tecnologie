@@ -1,4 +1,4 @@
-from flask import Flask, request, make_response, render_template
+from flask import Flask, session, render_template
 
 class PageController:
     def __init__(self, app):
@@ -16,7 +16,10 @@ class PageController:
 
         @self.app.route("/home")
         def home():
-            return render_template("home.html")
+            if 'id' in session and session['id'] is not None:
+                return render_template("home.html")
+            else:
+                return render_template("login.html")
 
         @self.app.route("/registrazione")
         def registrazione():
