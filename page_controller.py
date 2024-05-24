@@ -37,9 +37,3 @@ class PageController:
         def registrazione():
             return render_template("registrazione.html")
 
-# Inizializza l'app Flask e registra il controller
-app = Flask(__name__)
-pc = PageController(app)
-
-if __name__ == '__main__':
-    app.run(debug=True)
