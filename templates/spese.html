@@ -36,7 +36,10 @@
 <body>
     <div class="container">
         <h2 class="mt-4">Lista Spese</h2>
-        <p>Totale spese: <span id="totale"></span></p>
+
+        <p>Totale spese: <span id="totale"></span></p> 
+        <p>Totale spese questo mese: <span id="totale_mese"></span></p>
+
         <table class="table">
             <thead>
                 <tr>
@@ -49,6 +52,8 @@
             <tbody id="lista_spese"></tbody>
         </table>
     </div>
+    <a href="/home">Back home</a>
+
 
     <!-- jQuery e Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -56,21 +61,44 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function(){
+            get_spese();
+            //get_spese_mese();
+        });
+        function get_spese(){
             $.ajax({
                 url: "/get_spese",
                 method: "GET",
                 success: function(data){
                     console.log(data);
                     var totale = 0;
-                    for(var i = 0; i < data.length; i++){
-                        var spesa = data[i];
-                        totale += spesa[4];
-                        $("#lista_spese").append("<tr><td>"+spesa[2]+"</td><td>"+spesa[3]+"</td><td>"+spesa[4]+"</td><td>"+spesa[5]+"</td></tr>");
+                    if(data && data.length > 0) {
+                        for(var i = 0; i < data.length; i++){
+                            var spesa = data[i];
+                            totale += spesa[4];
+                            $("#lista_spese").append("<tr><td>"+spesa[2]+"</td><td>"+spesa[3]+"</td><td>"+spesa[4]+"</td><td>"+spesa[5]+"</td></tr>");
+                        }
                     }
                     $("#totale").text(totale.toFixed(2));
                 }
             });
-        });
+        }
+        /*function get_spese_mese(){
+            $.ajax({
+                url: "/get_spese_mese",
+                method: "GET",
+                success: function(data){
+                    console.log(data);
+                    var totale = 0;
+                    if(data && data.length > 0) {
+                        for(var i = 0; i < data.length; i++){
+                            var spesa = data[i];
+                            totale += spesa[4];
+                        }
+                    }
+                    $("#totale_mese").text(totale);
+                }
+            });
+        }*/
     </script>
 </body>
 </html>
