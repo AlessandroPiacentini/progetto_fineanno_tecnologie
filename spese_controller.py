@@ -6,11 +6,25 @@ from DataBase_controller import Database
 class SpeseController:
     db = None
     def __init__(self, app):
-        self.db = Database.getInstance()  # Inizializza l'istanza del database
+        self.db = Database()  # Inizializza l'istanza del database
         self.app = app
         self.register_routes()
         
     def register_routes(self):
+        
+        @self.app.route('/elimina', methods=['GET'])
+        def elimina():
+            id = request.args.get('id', type=int)
+            if id is None:
+                return jsonify({"error": "ID non valido"}), 400
+            where = {"id": id}
+            try:
+                self.db.delete('spese', where=where)
+                return jsonify(True)
+            except Exception as e:
+                return jsonify({"error": str(e)}), 500
+
+        
         @self.app.route('/get_spese')
         def get_spese():
             return self.retrieve_spese()

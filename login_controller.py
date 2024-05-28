@@ -5,7 +5,7 @@ from DataBase_controller import Database
 class LoginController:
     db = None
     def __init__(self, app):
-        self.db = Database.getInstance()  # Initialize the database instance
+        self.db = Database()  # Initialize the database instance
         self.app = app
         self.register_routes()
         
