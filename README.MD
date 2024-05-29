@@ -11,7 +11,7 @@ E' una web app sviluppata con Python e Flask per aiutarti a gestire le tue spese
 ## Tecnologie Utilizzate
 
 - **Backend**: Python, Flask
-- **Database**: SQLite
+- **Database**: MYSQL
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap
 - **Grafici**: Chart.js
 
@@ -26,8 +26,7 @@ E' una web app sviluppata con Python e Flask per aiutarti a gestire le tue spese
 
 1. Clona il repository
     ```bash
-    git clone https://github.com/tuo-username/expense-manager.git
-    cd expense-manager
+    git clone https://github.com/AlessandroPiacentini/progetto_fineanno_tecnologie.git
     ```
 
 
@@ -37,11 +36,7 @@ E' una web app sviluppata con Python e Flask per aiutarti a gestire le tue spese
     ```
 
 4. Inizializza il database
-    ```bash
-    flask db init
-    flask db migrate -m "Initial migration."
-    flask db upgrade
-    ```
+    import file db.sql in your DBMS
 
 5. Esegui l'applicazione
     ```bash
