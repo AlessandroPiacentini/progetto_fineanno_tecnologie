@@ -97,7 +97,10 @@
 
         function load_combobox(){
             for(var i = 1; i <= 12; i++){
-                $("#combox_mese").append("<option value='0"+i+"'>0"+i+"</option>");
+                if(i > 9)
+                    $("#combox_mese").append("<option value='"+i+"'>"+i+"</option>");
+                else
+                    $("#combox_mese").append("<option value='0"+i+"'>0"+i+"</option>");
             }
 
             var currentTime = new Date()
