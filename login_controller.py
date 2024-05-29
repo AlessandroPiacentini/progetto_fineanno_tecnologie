@@ -5,7 +5,7 @@ from DataBase_controller import Database
 class LoginController:
     db = None
     def __init__(self, app):
-        self.db = Database()  # Initialize the database instance
+        self.db = Database.getInstance() 
         self.app = app
         self.register_routes()
         
@@ -14,31 +14,31 @@ class LoginController:
         def checklogin():
             data = request.get_json()
             data['password'] = self.converti_in_md5(data['password'])
-            return self.check_login(data)
+            return self.check_login(data['username'], data['password'])
 
         @self.app.route('/checkregistrazione', methods=['POST'])
         def checkregistrazione():
             data = request.get_json()
             data['password'] = self.converti_in_md5(data['password'])
-            return self.check_registrazione(data)
+            return self.check_registrazione(data['username'], data['password'])
         
         @self.app.route('/logout')
         def logout():
             session.pop('id', None)
             return redirect('/login')
     
-    def check_login(self, data):
-        result = self.db.read_table('users', where=data)
+    def check_login(self, username, password):
+        result = self.db.check_user( username, password)
         if len(result) == 0:
             return jsonify(False)
         else:
             session['id'] = result[0][0]
             return jsonify("home")
         
-    def check_registrazione(self, data):
-        result = self.db.read_table('users', where=data)
+    def check_registrazione(self, username, password):
+        result = self.db.check_user( username, password)
         if len(result) == 0:
-            self.db.insert('users', data)
+            self.db.inserisci_user( username, password)
             return jsonify("login")
         else:
             return jsonify(False)

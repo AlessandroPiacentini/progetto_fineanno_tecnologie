@@ -12,7 +12,9 @@
         <h2>Lista Spese</h2>
 
         <p class="font-weight-bold">Totale spese: <span id="totale"></span></p> 
+        <p class="font-weight-bold">Totale spese questa settimana: <span id="totale_settimana"></span></p>
         <p class="font-weight-bold">Totale spese questo mese: <span id="totale_mese"></span></p>
+        <p class="font-weight-bold">Totale spese questo anno: <span id="totale_anno"></span></p>
 
         <table class="table table-striped">
             <thead class="thead-light">
@@ -44,6 +46,8 @@
             
             get_spese();
             get_spese_mese();
+            get_spese_anno();
+            get_spese_settimana();
         }
         
         function get_spese(){
@@ -65,6 +69,34 @@
 
 
         }
+        function get_spese_settimana(){
+            $.get("/get_spese_settimana", function(data){
+                console.log(data);
+                var totale = 0;
+                if(data && data.length > 0) {
+                    for(var i = 0; i < data.length; i++){
+                        var spesa = data[i];
+                        totale += spesa[4];
+                    }
+                }
+                $("#totale_settimana").text(totale);
+            });
+        }
+        function get_spese_anno(){
+            $.get("/get_spese_anno", function(data){
+                console.log(data);
+                var totale = 0;
+                if(data && data.length > 0) {
+                    for(var i = 0; i < data.length; i++){
+                        var spesa = data[i];
+                        totale += spesa[4];
+                    }
+                }
+                $("#totale_anno").text(totale);
+            });
+        }
+
+
         function get_spese_mese(){
             $.get("/get_spese_mese", function(data){
                 console.log(data);
@@ -77,12 +109,6 @@
                 }
                 $("#totale_mese").text(totale);
             });
-
-
-
-
-
-            
         }
 
 
