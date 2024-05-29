@@ -11,7 +11,7 @@ E' una web app sviluppata con Python e Flask per aiutarti a gestire le tue spese
 ## Tecnologie Utilizzate
 
 - **Backend**: Python, Flask
-- **Database**: MYSQL
+- **Database**: SQLite
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap
 - **Grafici**: Chart.js
 
