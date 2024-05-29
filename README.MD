@@ -36,7 +36,7 @@ E' una web app sviluppata con Python e Flask per aiutarti a gestire le tue spese
     ```
 
 4. Inizializza il database
-    import file db.sql in your DBMS
+    run file crea_db.py
 
 5. Esegui l'applicazione
     ```bash

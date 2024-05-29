@@ -14,4 +14,4 @@ sc = SpeseController(app)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)  # Consiglio di attivare il debug durante lo sviluppo
+    app.run() 
