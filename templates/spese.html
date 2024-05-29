@@ -8,14 +8,18 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-4">
-        <h2>Lista Spese</h2>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Lista Spese</h2>
 
-        <p class="font-weight-bold">Totale spese: <span id="totale"></span></p> 
-        <p class="font-weight-bold">Totale spese questa settimana: <span id="totale_settimana"></span></p>
-        <p class="font-weight-bold">Totale spese questo mese: <span id="totale_mese"></span></p>
-        <p class="font-weight-bold">Totale spese questo anno: <span id="totale_anno"></span></p>
-
+        <div class="row mb-4">
+            <div class="col">
+                <p class="font-weight-bold">Totale spese: <span id="totale"></span></p>
+                <p class="font-weight-bold">Totale spese questa settimana: <span id="totale_settimana"></span></p>
+                <p class="font-weight-bold">Totale spese questo mese: <span id="totale_mese"></span></p>
+                <p class="font-weight-bold">Totale spese questo anno: <span id="totale_anno"></span></p>
+            </div>
+        </div>
+        
         <table class="table table-striped">
             <thead class="thead-light">
                 <tr>
@@ -23,14 +27,36 @@
                     <th>Dettagli</th>
                     <th>Prezzo</th>
                     <th>Data</th>
-                    <th></th>
+                    <th>Azioni</th>
                 </tr>
             </thead>
             <tbody id="lista_spese"></tbody>
         </table>
 
-        <a href="/addSpesa" class="btn btn-success mb-3">Aggiungi una spesa</a><br>
-        <a href="/home" class="btn btn-primary mb-3">Back home</a>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4>Visualizza quanto hai speso in un mese passato</h3>
+            </div>
+            <div class="col-md-6">
+                <select class="form-control mb-2" name="combox_mese" id="combox_mese"></select>
+            </div>
+            <div class="col-md-6">
+                <select class="form-control mb-2" name="combox_anno" id="combox_anno"></select>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-info btn-block" onclick="get_spese_from_date()">Calcola Totale</button>
+            </div>
+            <div class="col-12 mt-3">
+                <p class="font-weight-bold">Totale: <span id="totale_scelto"></span></p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <a href="/addSpesa" class="btn btn-success btn-block mb-3">Aggiungi una spesa</a>
+                <a href="/home" class="btn btn-primary btn-block mb-3">Back home</a>
+            </div>
+        </div>
     </div>
 
     <!-- jQuery e Bootstrap JS -->
@@ -39,36 +65,68 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function(){
-            load_table();
+            load_page();
         });
 
-        function load_table(){
-            
+        function load_page(){
             get_spese();
             get_spese_mese();
             get_spese_anno();
             get_spese_settimana();
+            load_combobox();
         }
         
         function get_spese(){
-
             $.get("/get_spese", function(data){
                 console.log(data);
+                data.sort((a, b) => new Date(a[5]) - new Date(b[5]));
+
                 $("#lista_spese").html("");
                 var totale = 0;
                 if(data && data.length > 0) {
                     for(var i = 0; i < data.length; i++){
                         var spesa = data[i];
                         totale += spesa[4];
-                        $("#lista_spese").append("<tr><td>"+spesa[2]+"</td><td>"+spesa[3]+"</td><td>"+spesa[4]+"</td><td>"+spesa[5]+"</td><td><button onclick='elimina("+spesa[0]+")'>elimina</button></td></tr>");
+                        $("#lista_spese").append("<tr><td>"+spesa[2]+"</td><td>"+spesa[3]+"</td><td>"+spesa[4]+"</td><td>"+spesa[5]+"</td><td><button class='btn btn-danger btn-sm' onclick='elimina("+spesa[0]+")'>Elimina</button></td></tr>");
                     }
                 }
                 $("#totale").text(totale.toFixed(2));
                 return true;
             });
-
-
         }
+
+        function load_combobox(){
+            for(var i = 1; i <= 12; i++){
+                $("#combox_mese").append("<option value='"+i+"'>"+i+"</option>");
+            }
+
+            var currentTime = new Date()
+            var year = currentTime.getFullYear()
+            for(var i = year; i >(year-100); i--){
+                $("#combox_anno").append("<option value='"+i+"'>"+i+"</option>");
+            }
+        }
+
+        function get_spese_from_date(){
+            var mese = $("#combox_mese").val();
+            var anno = $("#combox_anno").val();
+            var param = {
+                mese: mese,
+                anno: anno
+            };
+            $.get("/get_spese_from_date", param, function(data){
+                console.log(data);
+                var totale = 0;
+                if(data && data.length > 0) {
+                    for(var i = 0; i < data.length; i++){
+                        var spesa = data[i];
+                        totale += spesa[4];
+                    }
+                }
+                $("#totale_scelto").text(totale.toFixed(2));
+            });
+        }
+
         function get_spese_settimana(){
             $.get("/get_spese_settimana", function(data){
                 console.log(data);
@@ -79,9 +137,10 @@
                         totale += spesa[4];
                     }
                 }
-                $("#totale_settimana").text(totale);
+                $("#totale_settimana").text(totale.toFixed(2));
             });
         }
+
         function get_spese_anno(){
             $.get("/get_spese_anno", function(data){
                 console.log(data);
@@ -92,10 +151,9 @@
                         totale += spesa[4];
                     }
                 }
-                $("#totale_anno").text(totale);
+                $("#totale_anno").text(totale.toFixed(2));
             });
         }
-
 
         function get_spese_mese(){
             $.get("/get_spese_mese", function(data){
@@ -107,10 +165,9 @@
                         totale += spesa[4];
                     }
                 }
-                $("#totale_mese").text(totale);
+                $("#totale_mese").text(totale.toFixed(2));
             });
         }
-
 
         function elimina(id_spesa){
             var param = {
@@ -120,12 +177,10 @@
             $.get("/elimina", param, function(data){
                 console.log(data);
                 if(data){
-                    load_table();
+                    load_page();
                 }
             });
         }
-        
-        
     </script>
 </body>
 </html>

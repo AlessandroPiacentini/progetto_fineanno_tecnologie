@@ -30,6 +30,14 @@ class SpeseController:
             return self.retrieve_spese()
         
         
+        @self.app.route('/get_spese_from_date', methods=['GET'])
+        def get_spese_from_date():
+            mese = request.args.get('mese')
+            anno = request.args.get('anno')
+            result = self.db.get_spese_from_id_user_from_date(session['id'], mese, anno)
+            return jsonify(result)
+        
+        
         @self.app.route('/get_spese_mese')
         def get_spese_mese():
             return self.retrieve_spese_mese()

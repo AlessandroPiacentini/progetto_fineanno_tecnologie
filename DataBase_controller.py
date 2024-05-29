@@ -65,9 +65,9 @@ class Database:
         params = (id_user,)
         return self._execute_fetchall(sql, params)
     
-    def get_spese_from_id_user_from_month(self, id_user, month):
-        sql = "SELECT * FROM spese WHERE id_user=%s AND MONTH(data)=%s"
-        params = (id_user, month)
+    def get_spese_from_id_user_from_date(self, id_user, month, year):
+        sql = "SELECT * FROM spese WHERE id_user=%s AND MONTH(data)=%s AND YEAR(data)=%s"
+        params = (id_user, month, year)
         return self._execute_fetchall(sql, params)
     
     def insert_spesa(self, titolo, dettagli, prezzo, data, id_user):

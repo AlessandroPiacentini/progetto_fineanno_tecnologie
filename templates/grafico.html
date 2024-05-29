@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Chart</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col">
+                <h1 class="text-center mb-4">Expense Chart</h1>
+                <canvas id="expenseChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col text-center">
+                <a href="/home" class="btn btn-primary">Torna alla Home</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const expenseData = get_data();
+
+        function get_data() {
+            var expenseData = [];
+            // Eseguire una richiesta AJAX per ottenere i dati delle spese dal server
+            $.get("/get_spese", function(data) {
+                console.log(data);
+                // Iterare sui dati restituiti e popolare l'array expenseData
+                data.forEach(function(expense) {
+                    expenseData.push({
+                        date: new Date(expense[5]).toLocaleDateString(), // Convertire la data in formato leggibile
+                        amount: expense[4] // Importo della spesa
+                    });
+                });
+                // Una volta completato il caricamento dei dati, aggiornare il grafico
+                updateChart(expenseData);
+            });
+        }
+
+        function updateChart(data) {
+            // Ordinare i dati per data
+            data.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+            // Estrazione delle date e degli importi delle spese
+            const dates = data.map(expense => expense.date);
+            const amounts = data.map(expense => expense.amount);
+
+            // Configurazione del grafico
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            const expenseChart = new Chart(ctx, {
+                type: 'line', // tipo di grafico (linea)
+                data: {
+                    labels: dates, // etichette per l'asse X
+                    datasets: [{
+                        label: 'Spese',
+                        data: amounts, // dati per l'asse Y
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // colore di sfondo
+                        borderColor: 'rgba(75, 192, 192, 1)', // colore del bordo
+                        borderWidth: 1 // spessore del bordo
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true // inizia l'asse Y da zero
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
