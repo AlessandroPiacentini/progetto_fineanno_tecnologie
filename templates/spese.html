@@ -12,15 +12,21 @@
         <h2 class="text-center mb-4">Lista Spese</h2>
 
         <div class="row mb-4">
-            <div class="col">
+            <div class="col-md-6 col-lg-3">
                 <p class="font-weight-bold">Totale spese: <span id="totale"></span></p>
+            </div>
+            <div class="col-md-6 col-lg-3">
                 <p class="font-weight-bold">Totale spese questa settimana: <span id="totale_settimana"></span></p>
+            </div>
+            <div class="col-md-6 col-lg-3">
                 <p class="font-weight-bold">Totale spese questo mese: <span id="totale_mese"></span></p>
+            </div>
+            <div class="col-md-6 col-lg-3">
                 <p class="font-weight-bold">Totale spese questo anno: <span id="totale_anno"></span></p>
             </div>
         </div>
-        
-        <table class="table table-striped">
+
+        <table class="table table-striped table-responsive">
             <thead class="thead-light">
                 <tr>
                     <th>Titolo</th>
@@ -35,13 +41,13 @@
 
         <div class="row mb-4">
             <div class="col-12">
-                <h4>Visualizza quanto hai speso in un mese passato</h3>
+                <h4>Visualizza quanto hai speso in un mese passato</h4>
             </div>
-            <div class="col-md-6">
-                <select class="form-control mb-2" name="combox_mese" id="combox_mese"></select>
+            <div class="col-md-6 mb-2">
+                <select class="form-control" name="combox_mese" id="combox_mese"></select>
             </div>
-            <div class="col-md-6">
-                <select class="form-control mb-2" name="combox_anno" id="combox_anno"></select>
+            <div class="col-md-6 mb-2">
+                <select class="form-control" name="combox_anno" id="combox_anno"></select>
             </div>
             <div class="col-12">
                 <button class="btn btn-info btn-block" onclick="get_spese_from_date()">Calcola Totale</button>
@@ -55,7 +61,6 @@
             <div class="col-12">
                 <a href="/addSpesa" class="btn btn-success btn-block mb-3">Aggiungi una spesa</a>
                 <a href="/grafico" class="btn btn-secondary btn-block mb-3">Visualizza grafico spese</a>
-
                 <a href="/home" class="btn btn-primary btn-block mb-3">Back home</a>
             </div>
         </div>
